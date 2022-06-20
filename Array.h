@@ -1,17 +1,25 @@
 #ifndef ARRAY_H
 #define ARRAY_H
 
-template <typename T> class Array : public Datastructure {
+#include "Datastructure.h"
+
+template <typename T> class Array : public Datastructure<T> {
 private:
-  T *array; // pointer to array
-  int length;
+  T *array;    // pointer to array
+  int _count;  // number of elements
+  int MAXSIZE; // size of the array
+  bool isEqual(std::string value) const;
 
 public:
   Array();
-  bool append(T data) override; // insert a new element to the end of the array
-  T search(std::string value) const override;
+  Array(int size);
+  void append(T data) override; // insert a new element to the back of the array
+  T *search(T value) const override;
   void sort() const override; // sort the array in ascending order
-  int length() const override;
+  int count();
+  void printList() const override;
+  void remove(T value);  // remove an element
+  T at(int index) const; // access the element at index
 };
 
 #include "Array.cpp"

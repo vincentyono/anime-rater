@@ -11,13 +11,19 @@ private:
   Datastructure<Anime> *animeList; // pointer to Anime Array
 
 public:
-  User(Datastructure<Anime> *datastructure, std::string username);
-  void printAnimeList() const;               // print animeList to console
-  bool appendAnime(Anime anime);             // add new Anime to animeList
-  Anime searchAnime(std::string animeTitle); // search for anime in animeList
+  User();
+  User(std::string username);
+  std::string getUsername() const;
+  void setUsername(std::string username);
+  void printAnimeList() const; // print animeList to console
+  void removeAnime(std::string animeTitle);
+  void appendAnime(Anime anime); // add new Anime to animeList
+  Anime *
+  searchAnime(std::string animeTitle) const; // search for anime in animeList
+  bool operator==(const User &other);
+  User &operator=(const User &other);
 };
 
-#include "Anime.cpp"
 #include "User.cpp"
 
 #endif

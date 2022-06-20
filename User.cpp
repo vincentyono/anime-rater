@@ -1,15 +1,40 @@
 #include "User.h"
 #include "Anime.h"
+#include "Array.h"
+#include "Datastructure.h"
 
-User::User(Datastructure<Anime> *datastructure, std::string username) {
+User::User() {
+  this->username = "Username";
+  this->animeList = new Array<Anime>();
+}
+
+User::User(std::string username) {
   this->username = username;
-  this->animeList = datastructure;
+  this->animeList = new Array<Anime>();
 }
 
 void User::printAnimeList() const { this->animeList->printList(); }
 
-bool User::appendAnime(Anime anime) { return this->animeList->append(anime); }
+void User::appendAnime(Anime anime) { this->animeList->append(anime); }
 
-Anime User::searchAnime(std::string animeTitle) {
-  return this->animeList->search(animeTitle);
+Anime *User::searchAnime(std::string animeTitle) const {
+  return this->animeList->search(*(new Anime(animeTitle, 0)));
+}
+
+std::string User::getUsername() const { return this->username; }
+
+bool User::operator==(const User &other) {
+  return this->username == other.username;
+}
+
+void User::setUsername(std::string username) { this->username = username; }
+
+User &User::operator=(const User &other) {
+  this->username = other.username;
+  this->animeList = other.animeList;
+  return *this;
+}
+
+void User::removeAnime(std::string animeTitle) {
+  this->animeList->remove(*(new Anime(animeTitle, 0)));
 }

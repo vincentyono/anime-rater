@@ -1,7 +1,7 @@
+#include "AnimeRater.h"
 #include <iostream>
 
 int main() {
-  std::cout << "Hello World!" << std::endl;
-
+  AnimeRater("user_list.csv", "Array").runAnimeRater();
   return 0;
 }
