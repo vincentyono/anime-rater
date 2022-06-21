@@ -24,7 +24,21 @@ template <typename T> T *Array<T>::search(T value) const {
   return nullptr;
 }
 
-template <typename T> void Array<T>::sort() const {}
+template <typename T> void Array<T>::sort() const {
+  int i, key, j;
+    for (i = 1; i < this->_count; i++)
+    {
+        key = this->array[i];
+        j = i - 1;
+
+        while (j >= 0 && this->array[j] > key)
+        {
+            this->array[j + 1] = this->array[j];
+            j = j - 1;
+        }
+        this->array[j + 1] = key;
+    }
+}
 
 template <typename T> T Array<T>::at(int index) const {
   return this->array[index];
