@@ -1,5 +1,4 @@
 #include "Anime.h"
-#include <iostream>
 
 Anime::Anime() {
   this->title = "No title";
@@ -19,8 +18,8 @@ void Anime::setTitle(std::string title) { this->title = title; }
 
 void Anime::setRating(int rating) { this->rating = rating; }
 
-bool Anime::operator==(const Anime &other) {
-  return this->title == other.title;
+bool Anime::operator==(std::string animeTitle) {
+  return this->title == animeTitle;
 }
 
 Anime &Anime::operator=(const Anime &other) {
@@ -31,7 +30,7 @@ Anime &Anime::operator=(const Anime &other) {
   return *this;
 }
 
-// ostream Anime::operator<<(ostream &os, const Anime &anime) {
-//   os << "Title: " << anime.getTitle() << ", Rating: " << anime.getRating();
-//   return os;
-// }
+std::ostream &operator<<(std::ostream &os, const Anime &anime) {
+  os << "title: " << anime.getTitle() << ", rating: " << anime.getRating();
+  return os;
+}

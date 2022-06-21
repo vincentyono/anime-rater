@@ -4,17 +4,18 @@
 #include "Datastructure.h"
 #include "Node.h"
 
-template <typename T> class LinkedList : public Datastructure {
+template <typename T1, typename T2>
+class LinkedList : public Datastructure<T1, T2> {
 private:
-  Node<T> *head;
+  Node<T1> *head;
 
 public:
   LinkedList();
-  void append(T data) override;
-  T *search(T value) const override;
+  void append(T1 data) override;
+  T1 *search(T2 value) const override;
   void sort() const override;
   void printList() const override;
-  void remove(T value);
+  void remove(T2 value);
 };
 
 #include "LinkedList.cpp"

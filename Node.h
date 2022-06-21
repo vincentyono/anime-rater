@@ -6,6 +6,7 @@ template <typename T> struct Node {
   Node<T> *next;
 
   Node();
+  ~Node();
   Node(T data);
   Node(T data, Node<T> *next);
 };

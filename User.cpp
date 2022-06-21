@@ -1,30 +1,27 @@
 #include "User.h"
-#include "Anime.h"
-#include "Array.h"
-#include "Datastructure.h"
 
 User::User() {
-  this->username = "Username";
-  this->animeList = new Array<Anime>();
+  this->username = "";
+  this->animeList = new Array<Anime, std::string>();
 }
 
 User::User(std::string username) {
   this->username = username;
-  this->animeList = new Array<Anime>();
+  this->animeList = new Array<Anime, std::string>();
 }
 
 void User::printAnimeList() const { this->animeList->printList(); }
 
 void User::appendAnime(Anime anime) { this->animeList->append(anime); }
 
-Anime *User::searchAnime(std::string animeTitle) const {
-  return this->animeList->search(*(new Anime(animeTitle, 0)));
+Anime User::searchAnime(std::string animeTitle) const {
+  return *this->animeList->search(animeTitle);
 }
 
 std::string User::getUsername() const { return this->username; }
 
-bool User::operator==(const User &other) {
-  return this->username == other.username;
+bool User::operator==(std::string username) {
+  return this->username == username;
 }
 
 void User::setUsername(std::string username) { this->username = username; }
@@ -36,5 +33,36 @@ User &User::operator=(const User &other) {
 }
 
 void User::removeAnime(std::string animeTitle) {
-  this->animeList->remove(*(new Anime(animeTitle, 0)));
+  this->animeList->remove(animeTitle);
+}
+
+std::ostream &operator<<(std::ostream &os, const User &user) {
+  os << user.getUsername();
+  return os;
+}
+
+bool User::operator>(const User &other) {
+  for (int i = 0;
+       i < std::min(this->getUsername().length(),
+                    other.getUsername()
+                        .length()); // min length between lhs username and rhs
+       i++) {
+    if (this->getUsername()[i] > other.getUsername()[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+bool User::operator<(const User &other) {
+  for (int i = 0;
+       i < std::min(this->getUsername().length(),
+                    other.getUsername()
+                        .length()); // min length between lhs username and rhs
+       i++) {
+    if (this->getUsername()[i] < other.getUsername()[i]) {
+      return true;
+    }
+  }
+  return false;
 }

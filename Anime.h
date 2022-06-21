@@ -15,9 +15,9 @@ public:
   void setRating(int rating);
   std::string getTitle() const;
   int getRating() const;
-  bool operator==(const Anime &other);
+  bool operator==(std::string animeTitle);
   Anime &operator=(const Anime &other);
-  // friend ostream &operator<<(ostream &os, const Anime &anime);
+  friend std::ostream &operator<<(std::ostream &os, const Anime &anime);
 };
 
 #include "Anime.cpp"

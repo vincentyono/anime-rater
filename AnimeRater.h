@@ -1,13 +1,19 @@
 #ifndef ANIMERATER_H
 #define ANIMERATER_H
 
-#include "Datastructure.h"
+#include "Anime.h"
 #include "User.h"
+#include <fstream>
+#include <iostream>
+
+template <typename T1, typename T2> class Datastructure;
+
+template <typename T1, typename T2> class LinkedList;
 
 class AnimeRater {
 private:
   std::string datastructureType;
-  Datastructure<User> *list;
+  Datastructure<User, std::string> *list;
   User *currentUser;
   void login(std::string username); // login as a user
   bool isLoggedIn() const;          // check if user is logged in
@@ -23,7 +29,7 @@ private:
   void textToUser(std::string text);
 
 public:
-  AnimeRater(std::string file, std::string datastructureType);
+  AnimeRater(std::string file, int DSType);
   void runAnimeRater();
 };
 

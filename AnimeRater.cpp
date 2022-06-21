@@ -1,10 +1,12 @@
 #include "AnimeRater.h"
 
-#include <fstream>
-#include <iostream>
+AnimeRater::AnimeRater(std::string file, int dsType) {
+  if (dsType == 0) {
+    this->list = new Array<User, std::string>();
+  } else if (dsType == 1) {
+    this->list = new LinkedList<User, std::string>();
+  }
 
-AnimeRater::AnimeRater(std::string file, std::string datastructureType) {
-  this->list = new Array<User>();
   std::fstream userList;
 
   userList.open(file);
@@ -22,12 +24,12 @@ void AnimeRater::textToUser(std::string text) {
   User *user = new User();
   while ((pos = text.find(",")) != std::string::npos) {
     token = text.substr(0, pos);
-    if (token.find("@") != std::string::npos) { // if username mark
-      user->setUsername(token.substr(token.find("@") + 1, std::string::npos));
+    if (token.find(":") == std::string::npos) { // if username mark
+      user->setUsername(token.substr(0, std::string::npos));
     }
-    if (token.find("#") != std::string::npos) {
+    if (token.find(":") != std::string::npos) {
       user->appendAnime(*(new Anime(
-          token.substr(token.find("#") + 1, token.find(":") - 1),
+          token.substr(0, token.find(":")),
           std::stoi(token.substr(token.find(":") + 1, std::string::npos)))));
     }
     text.erase(0, pos + 1);
@@ -102,14 +104,15 @@ void AnimeRater::runUserMenu() {
 }
 
 void AnimeRater::login(std::string username) {
-  User *user = this->list->search(*(new User(username)));
+  User *user = this->list->search(username);
+  std::cout << user << std::endl;
   if (user != nullptr) {
     this->currentUser = user;
     std::cout << "log in as " << this->currentUser->getUsername() << "\n";
   } else {
     std::cout << "User not found!\n";
     std::cout << "Create new user\n";
-    this->currentUser = user;
+    this->currentUser = new User(username);
   }
 }
 
