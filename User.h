@@ -26,7 +26,11 @@ public:
   User &operator=(const User &other);
   friend std::ostream &operator<<(std::ostream &os, const User &user);
   bool operator<(const User &other);
+  bool operator<=(const User &other);
   bool operator>(const User &other);
+  bool operator>=(const User &other);
+  std::string toString(); // return string representation of username and
+  // animeList as one line to put into csv file
 };
 
 #include "User.cpp"

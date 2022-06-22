@@ -34,3 +34,64 @@ std::ostream &operator<<(std::ostream &os, const Anime &anime) {
   os << "title: " << anime.getTitle() << ", rating: " << anime.getRating();
   return os;
 }
+
+bool Anime::operator<(const Anime &other) {
+  for (int i = 0; i < std::min(this->title.length(), other.title.length());
+       i++) {
+    if (this->title[i] < other.title[i]) {
+      return true;
+    } else if (this->title[i] > other.title[i]) {
+      return false;
+    }
+  }
+  return false;
+}
+
+bool Anime::operator<=(const Anime &other) {
+  if (this->title == other.title) {
+    return true;
+  }
+
+  for (int i = 0; i < std::min(this->title.length(), other.title.length());
+       i++) {
+    if (this->title[i] < other.title[i]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return false;
+}
+
+bool Anime::operator>(const Anime &other) {
+  for (int i = 0; i < std::min(this->title.length(), other.title.length());
+       i++) {
+    if (this->title[i] > other.title[i]) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+  return false;
+}
+
+bool Anime::operator>=(const Anime &other) {
+  if (this->title == other.title) {
+    return true;
+  }
+
+  for (int i = 0; i < std::min(this->title.length(), other.title.length());
+       i++) {
+    if (this->title[i] > other.title[i]) {
+      return true;
+    } else if (this->title[i] < other.title[i]) {
+      return false;
+    }
+  }
+  return false;
+}
+
+std::string Anime::toString(Anime anime) {
+  std::string str = anime.title + ":" + std::to_string(anime.rating);
+  return str;
+}

@@ -49,6 +49,8 @@ bool User::operator>(const User &other) {
        i++) {
     if (this->getUsername()[i] > other.getUsername()[i]) {
       return true;
+    } else if (this->getUsername()[i] < other.getUsername()[i]) {
+      return false;
     }
   }
   return false;
@@ -62,7 +64,52 @@ bool User::operator<(const User &other) {
        i++) {
     if (this->getUsername()[i] < other.getUsername()[i]) {
       return true;
+    } else if (this->getUsername()[i] > other.getUsername()[i]) {
+      return false;
     }
   }
   return false;
+}
+
+bool User::operator<=(const User &other) {
+  if (this->getUsername() == other.getUsername()) {
+    return true;
+  }
+
+  for (int i = 0;
+       i < std::min(this->getUsername().length(), other.getUsername().length());
+       i++) {
+    if (this->getUsername()[i] < other.getUsername()[i]) {
+      return true;
+    } else if (this->getUsername()[i] > other.getUsername()[i]) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+bool User::operator>=(const User &other) {
+  if (this->getUsername() == other.getUsername()) {
+    return true;
+  }
+
+  for (int i = 0;
+       i < std::min(this->getUsername().length(), other.getUsername().length());
+       i++) {
+    if (this->getUsername()[i] > other.getUsername()[i]) {
+      return true;
+    } else if (this->getUsername()[i] < other.getUsername()[i]) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
+std::string User::toString() {
+  std::string str;
+  str += this->getUsername() + ",";
+  this->animeList->toString(Anime::toString);
+  return str;
 }

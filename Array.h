@@ -15,10 +15,10 @@ public:
   void
   append(T1 data) override; // insert a new element to the back of the array
   T1 *search(T2 value) const override;
-  void sort() const override; // sort the array in ascending order
   int count();
   void printList() const override;
   void remove(T2 value); // remove an element
+  std::string toString(std::string func(T1)) override;
 };
 
 #include "Array.cpp"

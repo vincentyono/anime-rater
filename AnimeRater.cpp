@@ -1,6 +1,8 @@
 #include "AnimeRater.h"
 
 AnimeRater::AnimeRater(std::string file, int dsType) {
+  this->file = file;
+
   if (dsType == 0) {
     this->list = new Array<User, std::string>();
   } else if (dsType == 1) {
@@ -15,6 +17,7 @@ AnimeRater::AnimeRater(std::string file, int dsType) {
     while (getline(userList, line)) {
       this->textToUser(line);
     }
+    userList.close();
   }
 }
 
@@ -37,86 +40,106 @@ void AnimeRater::textToUser(std::string text) {
   this->list->append(*user);
 }
 
-void AnimeRater::printMainMenu() {
-  std::cout << "1. login \n2. exit \n\n"
-               "Enter command [1 - 2]: ";
+std::string AnimeRater::userToText() {
+  std::string text;
+
+  return text;
 }
 
 void AnimeRater::printUserMenu() {
-  std::cout << "1. status \n2. list all anime \n3. add new anime \n4. "
-               "change anime rating \n5. remove anime \n6. exit \n\n"
-               "Enter command [1 - 6]: ";
+  std::cout << "1. list all anime\n2. add new anime "
+               "\n3. remove anime from list\n4. change username\n5. "
+               "exit\n\n\n\nEnter command [1 - 5]: ";
 }
 
-void AnimeRater::runMainMenu() {
-  bool running = true;
-  std::string userInput;
+void AnimeRater::welcomeScreen() {
   std::string username;
-  while (running) {
-    this->printMainMenu();
-    std::cin >> userInput;
-    if (userInput == "1") { // login
-      std::cout << "Enter username: ";
-      std::cin >> username;
-      this->login(username);
-      running = false;
-    } else if (userInput == "2") { // exit
-      running = false;
-    }
-  }
-}
+  std::cout << // clang-format off
+"     _          _                  ____       _                 \n"
+"    / \\   _ __ (_)_ __ ___   ___  |  _ \\ __ _| |_ ___ _ __      \n"
+"   / _ \\ | '_ \\| | '_ ` _ \\ / _ \\ | |_) / _` | __/ _\\ '__|   \n"
+"  / ___ \\| | | | | | | | | |  __/ |  _ < (_| | ||  __/ |         \n"   
+" /_/   \\_\\_| |_|_|_| |_| |_|\\___| |_| \\_\\__,_|\\__\\___|_|  \n\n";
 
-void AnimeRater::runUserMenu() {
-  bool running = true;
-  std::string userInput;
-  while (running) {
-    this->printUserMenu();
-    std::cin >> userInput;
-    if (userInput == "1") { // status
-      std::cout << "currently logged in as " << this->currentUser->getUsername()
-                << "\n";
-
-    } else if (userInput == "2") { // list all anime
-      this->currentUser->printAnimeList();
-
-    } else if (userInput == "3") { // add new anime
-      std::string animeTitle;
-      std::string rating;
-      std::cout << "Enter anime title: ";
-      std::cin >> animeTitle;
-      std::cout << "Enter rating [1 - 5]: ";
-      std::cin >> rating;
-
-      this->currentUser->appendAnime(
-          *(new Anime(animeTitle, std::stoi(rating))));
-
-    } else if (userInput == "5") { // remove anime
-      std::string animeTitle;
-      this->currentUser->printAnimeList();
-      std::cout << "Enter anime title: ";
-      std::cin >> animeTitle;
-      this->currentUser->removeAnime(animeTitle);
-
-    } else if (userInput == "6") { // exit
-      running = false;
-    }
-  }
+  // clang-format on
+  std::cout << "Enter username: ";
+  std::cin >> username;
+  this->login(username);
 }
 
 void AnimeRater::login(std::string username) {
   User *user = this->list->search(username);
-  std::cout << user << std::endl;
-  if (user != nullptr) {
-    this->currentUser = user;
-    std::cout << "log in as " << this->currentUser->getUsername() << "\n";
-  } else {
-    std::cout << "User not found!\n";
-    std::cout << "Create new user\n";
+  if (user == nullptr) {
+    std::cout << "\n\n\n\n\nNew user created, logged in as " << username
+              << "\n\n";
     this->currentUser = new User(username);
+  } else {
+    this->currentUser = user;
+    std::cout << "\n\n\n\n\nLogged in successful, logged in as " << username
+              << "\n\n";
+  }
+}
+
+void AnimeRater::userMenu() {
+  bool running = true;
+  std::string userCommand;
+  while (running) {
+    this->printUserMenu();
+    std::cin >> userCommand;
+    if (userCommand == "1") { // list all anime
+      std::cout << "\n\n\n\n";
+      std::string temp;
+      this->currentUser->printAnimeList();
+      std::cout << "\n\nPress enter to continue...\n";
+      std::cin.ignore();
+      std::getline(std::cin, temp);
+      std::cout << "\n\n\n";
+    } else if (userCommand == "2") { // add new anime
+      std::string title;
+      std::string rating;
+      std::cout << "Enter anime title: ";
+      std::cin.ignore();
+      std::getline(std::cin, title);
+      std::cout << "Enter anime rating: ";
+      std::cin >> rating;
+      this->currentUser->appendAnime(*(new Anime(title, std::stoi(rating))));
+    } else if (userCommand == "3") { // remove anime from list
+      this->currentUser->printAnimeList();
+      std::string title;
+      std::cout << "\n\n\nEnter anime title: ";
+      std::cin.ignore();
+      std::getline(std::cin, title);
+      this->currentUser->removeAnime(title);
+    } else if (userCommand == "4") { // change username
+      std::string newUsername;
+      std::cout << "Enter new username: ";
+      std::cin >> newUsername;
+      std::cout << "Username is changed from "
+                << this->currentUser->getUsername() << " to " << newUsername
+                << "\n";
+      this->currentUser->setUsername(newUsername);
+    } else if (userCommand == "5") { // exit
+      std::cout << "Exiting program!"
+                << "\n";
+      running = false;
+    } else { // invalid input
+      std::cout << "Invalid command!\n\n\n\n\n";
+    }
+  }
+}
+
+void AnimeRater::save() {
+  std::fstream userList;
+
+  userList.open(this->file);
+  if (userList.is_open()) {
+
+    userList.close();
   }
 }
 
 void AnimeRater::runAnimeRater() {
-  this->runMainMenu();
-  this->runUserMenu();
+  this->welcomeScreen();
+  this->userMenu();
+  this->save();
 }

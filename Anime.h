@@ -18,6 +18,11 @@ public:
   bool operator==(std::string animeTitle);
   Anime &operator=(const Anime &other);
   friend std::ostream &operator<<(std::ostream &os, const Anime &anime);
+  bool operator<=(const Anime &other);
+  bool operator<(const Anime &other);
+  bool operator>(const Anime &other);
+  bool operator>=(const Anime &other);
+  static std::string toString(Anime anime);
 };
 
 #include "Anime.cpp"

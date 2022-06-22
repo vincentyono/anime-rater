@@ -13,9 +13,9 @@ public:
   LinkedList();
   void append(T1 data) override;
   T1 *search(T2 value) const override;
-  void sort() const override;
   void printList() const override;
   void remove(T2 value);
+  std::string toString(std::string func(T1)) override;
 };
 
 #include "LinkedList.cpp"

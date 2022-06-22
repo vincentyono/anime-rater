@@ -12,7 +12,7 @@ template <typename T1, typename T2> class LinkedList;
 
 class AnimeRater {
 private:
-  std::string datastructureType;
+  std::string file; // text file path
   Datastructure<User, std::string> *list;
   User *currentUser;
   void login(std::string username); // login as a user
@@ -20,13 +20,13 @@ private:
   void addUser();                   // create a new user
   void removeUser();                // remove user
   void save();                      // save list to csv file
-  void printMainMenu();             // print main menu to console
   void printUserMenu();             // print user's menu to console
-  void runMainMenu();
-  void runUserMenu();
+  void welcomeScreen();
+  void userMenu();
 
   // text manipulation
   void textToUser(std::string text);
+  std::string userToText();
 
 public:
   AnimeRater(std::string file, int DSType);
