@@ -92,6 +92,7 @@ bool Anime::operator>=(const Anime &other) {
 }
 
 std::string Anime::toString(Anime anime) {
-  std::string str = anime.title + ":" + std::to_string(anime.rating);
+  std::string rating = std::to_string(anime.rating);
+  std::string str = anime.title + "*" + rating + ",";
   return str;
 }

@@ -12,8 +12,10 @@ template <typename T1, typename T2> class LinkedList;
 
 class AnimeRater {
 private:
-  std::string file; // text file path
+  std::string file;
   Datastructure<User, std::string> *list;
+  int userCount; // number of user
+  int LIST_SIZE; // size of list
   User *currentUser;
   void login(std::string username); // login as a user
   bool isLoggedIn() const;          // check if user is logged in

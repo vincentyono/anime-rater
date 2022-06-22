@@ -110,6 +110,6 @@ bool User::operator>=(const User &other) {
 std::string User::toString() {
   std::string str;
   str += this->getUsername() + ",";
-  this->animeList->toString(Anime::toString);
+  str += this->animeList->toString(Anime::toString) + "\n";
   return str;
 }

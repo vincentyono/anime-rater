@@ -2,6 +2,7 @@
 
 template <typename T1, typename T2> LinkedList<T1, T2>::LinkedList() {
   this->head = nullptr;
+  this->_length = 0;
 }
 
 template <typename T1, typename T2>
@@ -10,6 +11,7 @@ void LinkedList<T1, T2>::append(
                //  time complexity = O(n)
   if (this->head == nullptr) {
     this->head = new Node<T1>(data);
+    this->_length++;
     return;
   }
 
@@ -22,6 +24,7 @@ void LinkedList<T1, T2>::append(
     while (current != nullptr) {
       if (data <= current->data) {
         prev->next = new Node<T1>(data, current);
+        this->_length++;
         return;
       }
       prev = current;
@@ -81,4 +84,13 @@ std::string LinkedList<T1, T2>::toString(std::string func(T1)) {
     current = current->next;
   }
   return str;
+}
+
+template <typename T1, typename T2>
+T1 LinkedList<T1, T2>::iterate(int index) const {
+  Node<T1> *current = this->head;
+  for (int i = 0; i < index; i++) {
+    current = current->next;
+  }
+  return current->data;
 }

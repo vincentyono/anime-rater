@@ -8,6 +8,7 @@ public:
   virtual void printList() const = 0;
   virtual void remove(T2 value) = 0;
   virtual std::string toString(std::string func(T1)) = 0;
+  virtual T1 iterate(int index) const = 0;
 };
 
 #endif

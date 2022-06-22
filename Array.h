@@ -19,6 +19,7 @@ public:
   void printList() const override;
   void remove(T2 value); // remove an element
   std::string toString(std::string func(T1)) override;
+  T1 iterate(int index) const override;
 };
 
 #include "Array.cpp"

@@ -90,3 +90,7 @@ std::string Array<T1, T2>::toString(std::string func(T1)) {
   }
   return str;
 }
+
+template <typename T1, typename T2> T1 Array<T1, T2>::iterate(int index) const {
+  return this->array[index];
+}

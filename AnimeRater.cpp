@@ -2,16 +2,26 @@
 
 AnimeRater::AnimeRater(std::string file, int dsType) {
   this->file = file;
+  this->userCount = 0;
+  std::fstream userList;
+  userList.open(this->file);
+  if (userList.is_open()) {
+    std::string line;
+    while (getline(userList, line)) {
+      this->userCount++;
+    }
+    userList.close();
+  }
+
+  this->LIST_SIZE = this->userCount * 2;
 
   if (dsType == 0) {
-    this->list = new Array<User, std::string>();
+    this->list = new Array<User, std::string>(this->LIST_SIZE);
   } else if (dsType == 1) {
     this->list = new LinkedList<User, std::string>();
   }
 
-  std::fstream userList;
-
-  userList.open(file);
+  userList.open(this->file);
   if (userList.is_open()) {
     std::string line;
     while (getline(userList, line)) {
@@ -27,13 +37,13 @@ void AnimeRater::textToUser(std::string text) {
   User *user = new User();
   while ((pos = text.find(",")) != std::string::npos) {
     token = text.substr(0, pos);
-    if (token.find(":") == std::string::npos) { // if username mark
+    if (token.find("*") == std::string::npos) { // if username mark
       user->setUsername(token.substr(0, std::string::npos));
     }
-    if (token.find(":") != std::string::npos) {
+    if (token.find("*") != std::string::npos) {
       user->appendAnime(*(new Anime(
-          token.substr(0, token.find(":")),
-          std::stoi(token.substr(token.find(":") + 1, std::string::npos)))));
+          token.substr(0, token.find("*")),
+          std::stoi(token.substr(token.find("*") + 1, std::string::npos)))));
     }
     text.erase(0, pos + 1);
   }
@@ -73,6 +83,8 @@ void AnimeRater::login(std::string username) {
     std::cout << "\n\n\n\n\nNew user created, logged in as " << username
               << "\n\n";
     this->currentUser = new User(username);
+    this->list->append(*(this->currentUser));
+    this->userCount++;
   } else {
     this->currentUser = user;
     std::cout << "\n\n\n\n\nLogged in successful, logged in as " << username
@@ -119,6 +131,7 @@ void AnimeRater::userMenu() {
                 << "\n";
       this->currentUser->setUsername(newUsername);
     } else if (userCommand == "5") { // exit
+      this->save();
       std::cout << "Exiting program!"
                 << "\n";
       running = false;
@@ -130,16 +143,17 @@ void AnimeRater::userMenu() {
 
 void AnimeRater::save() {
   std::fstream userList;
-
-  userList.open(this->file);
+  userList.open(this->file, std::ios::out);
   if (userList.is_open()) {
-
+    for (int i = 0; i < this->userCount; i++) {
+      userList << this->list->iterate(i).toString();
+    }
     userList.close();
   }
+  std::cout << "Successfully saved!\n";
 }
 
 void AnimeRater::runAnimeRater() {
   this->welcomeScreen();
   this->userMenu();
-  this->save();
 }
