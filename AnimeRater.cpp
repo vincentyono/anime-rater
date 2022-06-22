@@ -47,7 +47,7 @@ void AnimeRater::textToUser(std::string text) {
     }
     text.erase(0, pos + 1);
   }
-  this->list->append(*user);
+  this->addUser(*user);
 }
 
 std::string AnimeRater::userToText() {
@@ -58,8 +58,8 @@ std::string AnimeRater::userToText() {
 
 void AnimeRater::printUserMenu() {
   std::cout << "1. list all anime\n2. add new anime "
-               "\n3. remove anime from list\n4. change username\n5. "
-               "exit\n\n\n\nEnter command [1 - 5]: ";
+               "\n3. remove anime from list\n4. change username\n5. delete "
+               "account\n6. exit\n\n\n\nEnter command [1 - 6]: ";
 }
 
 void AnimeRater::welcomeScreen() {
@@ -83,7 +83,7 @@ void AnimeRater::login(std::string username) {
     std::cout << "\n\n\n\n\nNew user created, logged in as " << username
               << "\n\n";
     this->currentUser = new User(username);
-    this->list->append(*(this->currentUser));
+    this->addUser(*(this->currentUser));
     this->userCount++;
   } else {
     this->currentUser = user;
@@ -130,7 +130,13 @@ void AnimeRater::userMenu() {
                 << this->currentUser->getUsername() << " to " << newUsername
                 << "\n";
       this->currentUser->setUsername(newUsername);
-    } else if (userCommand == "5") { // exit
+    } else if (userCommand == "5") {
+      this->removeUser(this->currentUser->getUsername());
+      this->save();
+      running = false;
+      std::cout << "Exiting program!"
+                << "\n";
+    } else if (userCommand == "6") { // exit
       this->save();
       std::cout << "Exiting program!"
                 << "\n";
@@ -156,4 +162,20 @@ void AnimeRater::save() {
 void AnimeRater::runAnimeRater() {
   this->welcomeScreen();
   this->userMenu();
+}
+
+void AnimeRater::addUser(User user) { this->list->append(user); }
+
+void AnimeRater::removeUser(std::string username) {
+  this->list->remove(username);
+}
+
+void AnimeRater::searchSpeedTest(std::string username) {
+  this->list->search(username);
+}
+
+void AnimeRater::addUserSpeedTest(User user) { this->addUser(user); }
+
+void AnimeRater::removeUserSpeedTest(std::string username) {
+  this->removeUser(username);
 }
